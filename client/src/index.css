@@ -1,0 +1,168 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* styles  */
+
+/* Login */
+.login-container{
+  background-color:rgb(195, 238, 254);
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+ 
+}
+
+.form{
+  background-color:white;
+  width:450px;
+  min-width:300px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  margin-top:8rem;
+}
+
+
+/* header */
+.header{
+  width: 100vw;
+  background-color: rgba(255, 250, 250, 0.867);
+}
+
+.active-link{
+  text-align: center;
+
+}
+
+.btn{
+  width: 100px;
+}
+
+
+
+/* songsList */
+.songsList-main{
+  /* background-color:rgba(255, 255, 255, 0.832); */
+  width: 85%;
+  border-radius: 10px;
+  padding: 10px;
+  min-height: 80vh;
+
+}
+
+.container1{
+    background-color: rgb(253, 253, 253);
+    width: 95%;
+    border-radius: 10px;
+    padding: 10px;
+}
+.container2{
+    background-color:  rgb(253, 253, 253);
+    width: 85%;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.container3{
+    background-color:  rgb(255, 255, 255);
+    width: 100%;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.btn-custom{
+  width: 80px;
+}
+
+
+
+.container-main{
+  /* background-color:  rgb(219, 246, 251); */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 3rem 0;
+  border-radius: 10px;
+  width: 85%;
+
+}
+.audioWindow{
+    min-height: 40px;
+    /* background-color: aqua; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px;
+}
+.cubesContainer {
+    /* background-color: blue; */
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 columns, each taking equal space */
+    gap: 5px; /* Space between the cubes */
+  }
+  
+  .cube {
+    width: 72px;
+    height: 50px; 
+    border-radius: 5px;
+    border:solid rgb(57, 26, 26) 1px ;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+.blinking {
+  animation: blink 1s infinite;
+}
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.dataWindow{
+    background-color:  rgb(195, 238, 254);
+    width: 75%;
+    min-height: 200px;
+    padding: 10px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    /* justify-content: ; */
+}
+
+.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  .cubeWindow{
+    background-color: aqua;
+    width: 100%;
+  }
+
+  /* login.js */
+  
