@@ -105,7 +105,10 @@ function SongsList() {
                     <button 
                       className="btn btn-warning m-1 btn-custom" 
                       // onClick={() => handleEdit(song._id)}
-                    ><Link to={`/updateSong/${song._id}`} className='text-decoration-none text-white'> Edit</Link>
+                    >
+                      {/* <Link to={`/updateSong/${song._id}`} className='text-decoration-none text-white'>  */}
+                      Edit
+                      {/* </Link> */}
                      
                     </button>
                     <button 
