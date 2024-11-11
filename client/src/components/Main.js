@@ -55,10 +55,19 @@ function Main() {
   };
 
   const handleApply = () => {
+
+    if (songName==="") {
+      swal("Warning", "Please add Song ", "warning");
+      return;
+    }
+
     if (!cubeData.some((data) => data !== null)) {
       swal("Warning", "Please add at least one cube", "warning");
       return;
     }
+
+    
+
 
     const sendData = {
       songName,
@@ -95,6 +104,7 @@ function Main() {
 
     } catch (error) {
       console.error('Error while sending data:', error);
+      swal("Error", "Failed to update song", "error");
     } finally {
       setLoading(false); // Set loading to false after request completes
     }
