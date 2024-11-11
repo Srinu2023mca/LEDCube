@@ -9,7 +9,6 @@ import {useNavigate} from "react-router-dom"
 function Main() {
   const [cubes, setCubes] = useState([{ id: 1 }]);
   const [cubeData, setCubeData] = useState([]); // Collect data from all CubeWindows
-  const [cubePostData, setCubePostData] = useState([]); // Collect data from all CubeWindows for post
   const [postActive,setPostActive] =useState(false);
   const [songName,setSongName] =useState('');
   const [loading, setLoading] = useState(false);
@@ -18,19 +17,12 @@ function Main() {
   const addCube = () => {
     setCubes([...cubes, { id: cubes.length + 1 }]);
     setCubeData([...cubeData, null]); // Initialize new cubeData entry
-    setCubePostData([...cubePostData, null]); // Initialize new cubePostData entry
   };
 
   const handleAddEntry = (index, newData) => {
     const updatedData = [...cubeData];
     updatedData[index] = newData;  // Update data for the specific cube window
     setCubeData(updatedData);
-  };
-
-  const handleAddPostEntry = (index, newPostData) => {
-    const updatedPostData = [...cubePostData];
-    updatedPostData[index] = newPostData; // Update post data for the specific cube window
-    setCubePostData(updatedPostData);
   };
 
   const handleDeleteCube = (index) => {
@@ -51,9 +43,6 @@ function Main() {
     // Remove corresponding cube data
     const updatedCubeData = cubeData.filter((data, i) => i !== index);
     setCubeData(updatedCubeData);
-
-    const updatedCubePostData = cubePostData.filter((data, i) => i !== index);
-    setCubePostData(updatedCubePostData);
 
         swal("Poof! Your song has been deleted!", {
           icon: "success",
@@ -81,7 +70,6 @@ function Main() {
   };
 
   const postData = async (data) => {
-    // setPostActive(true)
     setLoading(true);
 
     try {
@@ -89,12 +77,10 @@ function Main() {
   
       // Handle successful response (status code 201 is OK)
     if (response.status >= 200 && response.status < 300) {
-      console.log('Response from API:', response.data);
       
       // Reset state upon successful response
       setCubes([{ id: 0 }]); // Reset to initial cube
       setCubeData([]);
-      setCubePostData([]);
       
       setSongName("")
       swal("Success!", "Your song has been saved!", {
@@ -102,8 +88,6 @@ function Main() {
       }).then(() => {
         navigate('/');
       });
-
-     
 
     } else {
       throw new Error(`Unexpected response status: ${response.status}`);
@@ -117,8 +101,6 @@ function Main() {
 
   };
 
-  console.log(cubeData)
-
   return (
     <div className="container-main bg-white">
       <h2 className="text-center my-4">Audio Player with Color & Duration Control</h2>
@@ -130,9 +112,7 @@ function Main() {
           <CubeWindow 
             key={cube.id} 
             onAddEntry={(newData) => handleAddEntry(index, newData)} 
-            onAddPostEntry={(newPostData) => handleAddPostEntry(index, newPostData)} 
             cubeData={cubeData[index]} // Pass specific data for this cube
-            cubePostData ={cubePostData[index]}
             onDelete={() => handleDeleteCube(index)} // Add delete functionality
             postActive={postActive}
             setPostActive={setPostActive}

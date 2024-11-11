@@ -17,8 +17,7 @@ const Header = () => {
     }).then(async (willLogout) => {
       if (willLogout) {
         try {
-          const response = await axios.get(`api/auth/logout`);
-          console.log(response);
+           await axios.get(`api/auth/logout`);
           swal("Logged out successfully!", {
             icon: "success",
           });

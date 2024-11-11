@@ -2,6 +2,7 @@ import React, {useState,useEffect} from 'react'
 import axios from '../../axios';
 import swal from 'sweetalert';
 import { useParams} from 'react-router-dom';
+import HamsterWheel from '../LoadingHamster';
 
 const ViewSong = () => {
 
@@ -20,7 +21,7 @@ const ViewSong = () => {
       
         const response =await axios.get(`api/songData/${id}`);
         const data = await response.data;
-        console.log(data)
+        // console.log(data)
         setSpinner(false)
         setSongName(data?.songName)
         setcubes(data?.cubes||[])
@@ -39,10 +40,12 @@ const ViewSong = () => {
   },[id])
 
   if(Spinner){
-    return <h6>loading</h6>
+    return <>
+    <HamsterWheel/>
+    </>
   }
 
-  console.log(cubes)
+  // console.log(cubes)
 
   return (
     <div className='container2 bg-white mt-5'>
@@ -51,7 +54,6 @@ const ViewSong = () => {
         <h4 className='form-control fs-5  mt-2'>{songName}</h4>
       </div>
       {cubes.length> 0 && cubes.map((cube, index) => (
-        // <div>{cube.title}</div>
         <div className='mt-2 rounded p-2 shadow'key={index}>
           <div className='d-flex align-items-center justify-content-around'>
             <label className='me-3 'style={{width:'140px'}}>Cube Name: </label>

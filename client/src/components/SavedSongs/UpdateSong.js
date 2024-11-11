@@ -5,6 +5,7 @@ import CubeWindow from '../CubeWindow';
 import axios from '../../axios';
 import swal from 'sweetalert';
 import { useParams,useNavigate } from 'react-router-dom';
+import HamsterWheel from '../LoadingHamster';
 
 
 function UpdateSong() {
@@ -60,7 +61,7 @@ function UpdateSong() {
       
         const response =await axios.get(`api/songData/${id}`);
         const data = await response.data;
-        console.log(data)
+        // console.log(data)
         setSpinner(false)
         setSongName(data?.songName)
         setCubeData(data.cubes || []);
@@ -88,7 +89,7 @@ function UpdateSong() {
       cubes: cubeData.filter((data) => data !== null) // Filter out any null entries
     }
     
-    console.log('Final Cube Data:', sendData);
+    // console.log('Final Cube Data:', sendData);
     postData( sendData)
   };
 
@@ -101,10 +102,7 @@ function UpdateSong() {
   
       // Handle successful response (status code 201 is OK)
     if (response.status >= 200 && response.status < 300) {
-      console.log('Response from API:', response.data);
-
-      
-      
+      // console.log('Response from API:', response.data);
       swal("Success!", "Your song has been Updated!", {
         icon: "success",
       }).then(() => {
@@ -133,7 +131,9 @@ function UpdateSong() {
   };
 
   if(Spinner){
-    return <h6>loading</h6>
+    return <>
+    <HamsterWheel/>
+    </>
   }
 
   return (

@@ -2,6 +2,7 @@
 import React,{useEffect,useState} from "react";
 import { Navigate } from "react-router-dom";
 import axios from "../axios";
+import HamsterWheel from "../components/LoadingHamster/index";
 
 const ProtectedRoute = ({ children }) => {
 
@@ -36,7 +37,9 @@ const ProtectedRoute = ({ children }) => {
 
 
   if(loading){
-    return <h6>loading</h6>
+    return <>
+    <HamsterWheel/>
+    </>
   }
 
   return user ? children : <Navigate to="/login" />;

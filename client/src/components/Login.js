@@ -7,13 +7,18 @@ const Login = () => {
   const [email, setEmail] = useState("vemulasrinu104@gmail.com");
   const [password, setPassword] = useState("Srinu53@");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setLoading(true);
+
     try {
       const response = await axios.post("api/auth/login", { email, password });
-      console.log(response)
+      // console.log(response)
+      setLoading(false);
 
       if(response.status===200){
         swal("Your account LogIn Success!", {
@@ -26,6 +31,7 @@ const Login = () => {
       }
       
     } catch (err) {
+      setLoading(true);
       setError("Invalid credentials");
     }
   };
@@ -58,7 +64,9 @@ const Login = () => {
       </div>
         
         
-        <button type="submit" className="btn btn-primary w-50">Login</button>
+        <button type="submit" className="btn btn-primary w-50">
+        {loading ? <span className="spinner-border spinner-border-sm mx-2" role="status" aria-hidden="true"></span> : 'LogIn'}
+        </button>
       </form>
     </div>
   );

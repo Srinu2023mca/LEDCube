@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from '../../axios'; // Adjust this import based on your axios setup
 import { Link } from 'react-router-dom';
 import swal from 'sweetalert';
+import HamsterWheel from '../LoadingHamster';
+
 
 function SongsList() {
   const [songs, setSongs] = useState([]);
@@ -12,7 +14,7 @@ function SongsList() {
     setLoading(true);
     try {
       const response = await axios.get('api/songsData'); // Adjust the endpoint as necessary
-      console.log(response.data)
+      // console.log(response.data)
       setSongs(response.data); // Assuming the response contains the list of songs
     } catch (error) {
       console.error('Error fetching songs data:', error);
@@ -26,7 +28,7 @@ function SongsList() {
     fetchSongs();
   }, []);
 
-  const handleView = (songId) => {
+  const handlePlay = (songId) => {
     // Implement the logic for viewing song details
     console.log(`Viewing song with ID: ${songId}`);
   };
@@ -60,14 +62,18 @@ function SongsList() {
     });
   };
 
+  if(loading){
+    return <>
+    <HamsterWheel/>
+    </>
+  }
+
 
   return (
     <div className="songsList-main mt-5 bg-white">
       <h2 className="text-center my-4">Saved Songs</h2>
       <div className='table-responsive'>
-      {loading ? (
-        <div className="text-center">Loading songs...</div>
-      ) : (
+      
         <table className="table table-striped table-bordered ">
           <thead>
             <tr>
@@ -92,7 +98,7 @@ function SongsList() {
                   <td className=''>
                     <button 
                       className="btn btn-success m-1 text-white btn-custom" 
-                      onClick={() => handleView(song._id)}
+                      onClick={() => handlePlay(song._id)}
                     >
                       Play
                     </button>
@@ -106,9 +112,9 @@ function SongsList() {
                       className="btn btn-warning m-1 btn-custom" 
                       // onClick={() => handleEdit(song._id)}
                     >
-                      {/* <Link to={`/updateSong/${song._id}`} className='text-decoration-none text-white'>  */}
+                      <Link to={`/updateSong/${song._id}`} className='text-decoration-none text-white'> 
                       Edit
-                      {/* </Link> */}
+                      </Link>
                      
                     </button>
                     <button 
@@ -123,7 +129,6 @@ function SongsList() {
             )}
           </tbody>
         </table>
-      )}
 
       </div>
 

@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 
-function CubeWindow({ onAddEntry,onAddPostEntry, onDelete, cubeData,cubePostData ,cubes,postActive ,setPostActive}) {
+function CubeWindow({ onAddEntry, onDelete, cubeData,cubes}) {
   const [title, setTitle] = useState('');
   const [startTime, setStartTime] = useState('00:00');
   const [endTime, setEndTime] = useState('');
@@ -10,65 +10,19 @@ function CubeWindow({ onAddEntry,onAddPostEntry, onDelete, cubeData,cubePostData
   const [bottomColor, setBottomColor] = useState('#00ffff'); // Default cyan
   const [effectType, setEffectType] = useState('');
   const [dataEntries, setDataEntries] = useState([]);
-  const [dataPostEntries, setDataPostEntries] = useState([]);
   const [editIndex, setEditIndex] = useState(null);
   const [selectedOption, setSelectedOption] = useState('');
 
-  console.log(cubes)
+  // console.log(cubes)
 
   // Sync cubeData when cubeData prop is updated
   useEffect(() => {
     if (cubeData) {
       setDataEntries(cubeData.entries || []);
-      setDataPostEntries(cubePostData || []);
       setTitle(cubeData.title || '');
     }    
-  }, [cubeData,cubePostData]);
+  }, [cubeData]);
 
-  // const handleGroupChange = (e) => setSelectedGroup(e.target.value);
-
-
-  // useEffect(() => {
-  //   const postData = async (dataPostEntries) => {
-  //     // console.log(dataPostEntries)
-  //     try {
-  //       const response = await fetch('http://localhost:8080/api/post/led', {
-  //         // const response = await fetch('http://192.168.31.30/led', {
-  //         method: 'POST',
-  //         // mode: 'no-cors',
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //         },
-           
-  //         body: JSON.stringify(dataPostEntries),
-  //       });
-  
-  //       if (!response.ok) {
-  //         setPostActive(false)
-  //         throw new Error(`HTTP error! status: ${response.status}`);
-  //       }else{
-
-  //         const result = await response.json();
-
-  //         if(result.success){
-  //          console.log('Response from API:', result);
-  //          setPostActive(false)
-  //          alert("Patterns Applied successful")
-  //        }
-  //       }
-  //     } catch (error) {
-  //       console.error('Error while sending data:', error);
-  //       alert("Error to send Patterns")
-  //       setPostActive(false)
-  //     }
-  //   };
-  
-  //   if (postActive && dataPostEntries.length > 0) {
-  //     // console.log("function API")
-  //     postData(dataPostEntries);
-  //   }
-  // }, [postActive, dataPostEntries]);
-  
 
   const hexToRgb = (hex) => {
     const bigint = parseInt(hex.slice(1), 16);
@@ -78,13 +32,13 @@ function CubeWindow({ onAddEntry,onAddPostEntry, onDelete, cubeData,cubePostData
     return `rgb(${r}, ${g}, ${b})`;
   };
 
-  const hexToRgbObj = (hex) => {
-    const bigint = parseInt(hex.slice(1), 16);
-    const r = (bigint >> 16) & 255;
-    const g = (bigint >> 8) & 255;
-    const b = bigint & 255;
-    return { red: r, green: g, blue: b };
-  };
+  // const hexToRgbObj = (hex) => {
+  //   const bigint = parseInt(hex.slice(1), 16);
+  //   const r = (bigint >> 16) & 255;
+  //   const g = (bigint >> 8) & 255;
+  //   const b = bigint & 255;
+  //   return { red: r, green: g, blue: b };
+  // };
 
   const rgbToHex = (rgb) => {
     const [r, g, b] = rgb.match(/\d+/g);
@@ -112,22 +66,18 @@ function CubeWindow({ onAddEntry,onAddPostEntry, onDelete, cubeData,cubePostData
     return `${hours}m ${minutes}s`;
   };
 
-  const calculateDuration2 = (start, end) => {
-    const [startHour, startMinute] = start.split(':').map(Number);
-    const [endHour, endMinute] = end.split(':').map(Number);
-    const startInMinutes = startHour * 60 + startMinute;
-    const endInMinutes = endHour * 60 + endMinute;
-    const durationInMinutes = endInMinutes - startInMinutes;
-    return durationInMinutes*1000;
-  };
+  // const calculateDuration2 = (start, end) => {
+  //   const [startHour, startMinute] = start.split(':').map(Number);
+  //   const [endHour, endMinute] = end.split(':').map(Number);
+  //   const startInMinutes = startHour * 60 + startMinute;
+  //   const endInMinutes = endHour * 60 + endMinute;
+  //   const durationInMinutes = endInMinutes - startInMinutes;
+  //   return durationInMinutes*1000;
+  // };
 
   const handleAddData = async (e) => {
 
     e.preventDefault();
-
-    // console.log(postActive)
-    // console.log(dataPostEntries)
-
     if (startTime && endTime && topColor && sidesColor && bottomColor && effectType) {
       const newData = {
         startTime,
@@ -139,13 +89,6 @@ function CubeWindow({ onAddEntry,onAddPostEntry, onDelete, cubeData,cubePostData
         duration: calculateDuration1(startTime, endTime),
       };
 
-      const newPostData = {
-        top: hexToRgbObj(topColor),
-        sides: hexToRgbObj(sidesColor),
-        bottom: hexToRgbObj(bottomColor),
-        duration: calculateDuration2(startTime, endTime),
-        blink:effectType==="Blink" ? true: false,
-      };
 
       const updatedEntries = [...dataEntries];
       if (editIndex !== null) {
@@ -155,18 +98,8 @@ function CubeWindow({ onAddEntry,onAddPostEntry, onDelete, cubeData,cubePostData
         updatedEntries.push(newData);
       }
 
-      const updatedPostEntries = [...dataPostEntries];
-      if (editIndex !== null) {
-        updatedPostEntries[editIndex] = newPostData;
-        setEditIndex(null);
-      } else {
-        updatedPostEntries.push(newPostData);
-      }
-
       setDataEntries(updatedEntries);
-      setDataPostEntries(updatedPostEntries);
       onAddEntry({ title, entries: updatedEntries }); // Pass updated data to parent
-      onAddPostEntry(updatedPostEntries);
       
       // Reset form
       setStartTime('');
@@ -194,7 +127,6 @@ function CubeWindow({ onAddEntry,onAddPostEntry, onDelete, cubeData,cubePostData
     onDelete(title);
     setTitle('');
     setDataEntries([]);
-    setDataPostEntries([]);
     setStartTime('');
     setEndTime('');
     setTopColor('#ff00ff');
@@ -211,7 +143,7 @@ function CubeWindow({ onAddEntry,onAddPostEntry, onDelete, cubeData,cubePostData
     setSelectedOption(e.target.value)
     const getValue = e.target.value
     const data = cubes.filter(cube => cube?.title === getValue) // Filter only cubes with title matching getValue
-    console.log(data)
+    // console.log(data)
     onAddEntry({title,entries:data[0].entries})
 
     }
