@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import AudioPlayer from './AudioPlayer';
 import CubeWindow from './CubeWindow';
-import axios from '../axios';
 import swal from 'sweetalert';
 import {useNavigate} from "react-router-dom"
+import { useCreateSongCubesMutation } from '../app/service/SongCubesSlice';
 
 function Main() {
   const [cubes, setCubes] = useState([{ id: 1 }]);
@@ -13,10 +13,15 @@ function Main() {
   const [songName,setSongName] =useState('');
   const [loading, setLoading] = useState(false);
   const navigate =useNavigate()
+  const [selectedCubes, setSelectedCubes] = useState([]);
+
+  const [createSongCubes] =useCreateSongCubesMutation();
 
   const addCube = () => {
+    setPostActive(true)
     setCubes([...cubes, { id: cubes.length + 1 }]);
     setCubeData([...cubeData, null]); // Initialize new cubeData entry
+    // setPostActive(false)
   };
 
   const handleAddEntry = (index, newData) => {
@@ -74,7 +79,7 @@ function Main() {
       cubes: cubeData.filter((data) => data !== null) // Filter out any null entries
     }
     
-    console.log('Final Cube Data:', sendData);
+    // console.log('Final Cube Data:', sendData);
     postData( sendData)
   };
 
@@ -82,10 +87,11 @@ function Main() {
     setLoading(true);
 
     try {
-      const response = await axios.post("api/createSongData", data)
+      const response = await createSongCubes(data).unwrap();
+      // console.log(response)
   
       // Handle successful response (status code 201 is OK)
-    if (response.status >= 200 && response.status < 300) {
+    if (response?.status==="success") {
       
       // Reset state upon successful response
       setCubes([{ id: 0 }]); // Reset to initial cube
@@ -104,7 +110,7 @@ function Main() {
 
     } catch (error) {
       console.error('Error while sending data:', error);
-      swal("Error", "Failed to update song", "error");
+      swal("Error", "Failed to send song Data", "error");
     } finally {
       setLoading(false); // Set loading to false after request completes
     }
@@ -126,7 +132,9 @@ function Main() {
             onDelete={() => handleDeleteCube(index)} // Add delete functionality
             postActive={postActive}
             setPostActive={setPostActive}
-            cubes={cubeData}
+            duplicateCubes={cubeData}
+            selectedCubes={selectedCubes}
+            setSelectedCubes={setSelectedCubes}
           />
         ))}
         <div className='d-flex align-items-center justify-content-center gap-3'>

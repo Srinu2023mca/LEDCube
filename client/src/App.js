@@ -6,8 +6,13 @@ import Main from "./components/Main";
 import SongsList from "./components/SavedSongs/SongsList";
 import UpdateSong from "./components/SavedSongs/UpdateSong";
 import ViewSong from "./components/SavedSongs/ViewSong";
-import Login from "./components/Login";
+import Cubes from "./components/Cubes"
+import Login from "./components/pages/Login";
+import Forgot from "./components/pages/Forgot";
+import ResetPassword from "./components/pages/ResetPassword";
+
 import ProtectedRoute from "./components/ProtectedRoute"; // Import ProtectedRoute
+
 import './App.css';
 
 import PageNotFound from "./components/PageNotFound/index"
@@ -21,6 +26,8 @@ const App = () => {
         <Routes>
           {/* Public Route */}
           <Route path="/login" element={<Login />} />
+          <Route path="/forgot" element={<Forgot />} />
+          <Route path="/reset-password/:token" element={<ResetPassword/>} />
 
           {/* Protected Routes */}
           <Route
@@ -38,6 +45,15 @@ const App = () => {
               <ProtectedRoute >
                 <Header />
                 <Main />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/cubes"
+            element={
+              <ProtectedRoute >
+                <Header />
+                <Cubes/>
               </ProtectedRoute>
             }
           />

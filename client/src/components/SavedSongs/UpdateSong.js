@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import AudioPlayer from '../AudioPlayer';
 import CubeWindow from '../CubeWindow';
-import axios from '../../axios';
 import swal from 'sweetalert';
 import { useParams,useNavigate } from 'react-router-dom';
 import HamsterWheel from '../LoadingHamster';
+import {useGetSongCubesByIdMutation, useUpdateSongCubesByIdMutation } from '../../app/service/SongCubesSlice';
 
 
 function UpdateSong() {
@@ -15,15 +15,18 @@ function UpdateSong() {
   const [postActive,setPostActive] =useState(false);
   const [songName,setSongName] =useState('');
   const [loading, setLoading] = useState(false);
-  const [Spinner, setSpinner] = useState(false);
 
   const { id } = useParams();
   // console.log(id)
 
   const navigate =useNavigate();
 
+
+  const [updateSongCubes] =useUpdateSongCubesByIdMutation();
+  const [getSongCubesById,{isLoading}] =useGetSongCubesByIdMutation();
+
   const addCube = () => {
-    setCubes([...cubes, { id: cubes.length + 1 }]);
+    setCubes([...cubes, { id: cubes?.length + 1 }]);
     setCubeData([...cubeData, null]); // Initialize new cubeData entry
     setCubePostData([...cubePostData, null]); // Initialize new cubePostData entry
   };
@@ -42,33 +45,29 @@ function UpdateSong() {
 
   const handleDeleteCube = (index) => {
     // Remove the cube from the cubes array
-    const updatedCubes = cubes.filter((cube, i) => i !== index);
+    const updatedCubes = cubes?.filter((cube, i) => i !== index);
     setCubes(updatedCubes);
 
     // Remove corresponding cube data
-    const updatedCubeData = cubeData.filter((data, i) => i !== index);
+    const updatedCubeData = cubeData?.filter((data, i) => i !== index);
     setCubeData(updatedCubeData);
 
-    const updatedCubePostData = cubePostData.filter((data, i) => i !== index);
+    const updatedCubePostData = cubePostData?.filter((data, i) => i !== index);
     setCubePostData(updatedCubePostData);
   };
 
   useEffect(()=>{
-    setSpinner(true)
     const getSong = async()=>{
 
     try{
-      
-        const response =await axios.get(`api/songData/${id}`);
-        const data = await response.data;
+        const response =await getSongCubesById(id).unwrap();
+        const data = await response?.data;
         // console.log(data)
-        setSpinner(false)
         setSongName(data?.songName)
-        setCubeData(data.cubes || []);
-        setCubes(data.cubes.map((_, idx) => ({ id: idx + 1 })));
+        setCubeData(data?.cubes || []);
+        setCubes(data?.cubes?.map((_, idx) => ({ id: idx + 1 })));
       }catch(error){
         console.log("Error",error)
-        setSpinner(false);
         swal("Error", "Failed to fetch song data", "error");
         
       }
@@ -77,7 +76,7 @@ function UpdateSong() {
     
 
     getSong()
-  },[id])
+  },[id,getSongCubesById])
 
   const handleApply = () => {
     if (!cubeData.some((data) => data !== null)) {
@@ -98,10 +97,10 @@ function UpdateSong() {
     setLoading(true);
 
     try {
-      const response = await axios.put(`api/songData/${id}`, data)
-  
-      // Handle successful response (status code 201 is OK)
-    if (response.status >= 200 && response.status < 300) {
+      const response = await updateSongCubes({id,data}).unwrap()
+      // console.log(response)
+      
+    if (response.status ==="success") {
       // console.log('Response from API:', response.data);
       swal("Success!", "Your song has been Updated!", {
         icon: "success",
@@ -130,7 +129,7 @@ function UpdateSong() {
 
   };
 
-  if(Spinner){
+  if(isLoading){
     return <>
     <HamsterWheel/>
     </>
@@ -143,7 +142,7 @@ function UpdateSong() {
         <AudioPlayer songName={songName} setSongName={setSongName}/>
       </div>
       <div className='container1'>
-        {cubes.map((cube, index) => (
+        {cubes?.map((cube, index) => (
           <CubeWindow 
             key={cube.id} 
             onAddEntry={(newData) => handleAddEntry(index, newData)} 
@@ -153,7 +152,7 @@ function UpdateSong() {
             onDelete={() => handleDeleteCube(index)} // Add delete functionality
             postActive={postActive}
             setPostActive={setPostActive}
-            cubes={cubeData}
+            duplicateCubes={cubeData}
           />
         ))}
         <div className='d-flex align-items-center justify-content-around'>

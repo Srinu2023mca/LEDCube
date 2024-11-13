@@ -1,32 +1,33 @@
-import React, { useState, useEffect } from 'react';
-import axios from '../../axios'; // Adjust this import based on your axios setup
-import { Link } from 'react-router-dom';
-import swal from 'sweetalert';
-import HamsterWheel from '../LoadingHamster';
-
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import swal from "sweetalert";
+import HamsterWheel from "../LoadingHamster";
+import {
+  useGetSongCubesMutation,
+  useDeleteSongCubesByIdMutation,
+} from "../../app/service/SongCubesSlice";
 
 function SongsList() {
   const [songs, setSongs] = useState([]);
-  const [loading, setLoading] = useState(false);
+
+  const [getSongCubes, { isLoading }] = useGetSongCubesMutation();
+  const [deleteSongCubes] = useDeleteSongCubesByIdMutation();
 
   // Function to fetch songs data from the server
   const fetchSongs = async () => {
-    setLoading(true);
     try {
-      const response = await axios.get('api/songsData'); // Adjust the endpoint as necessary
-      // console.log(response.data)
-      setSongs(response.data); // Assuming the response contains the list of songs
+      const response = await getSongCubes().unwrap(); // Adjust the endpoint as necessary
+      // console.log(response)
+      setSongs(response?.data); // Assuming the response contains the list of songs
     } catch (error) {
-      console.error('Error fetching songs data:', error);
-    } finally {
-      setLoading(false);
+      console.error("Error fetching songs data:", error);
     }
   };
 
   // Fetch the songs when the component mounts
   useEffect(() => {
     fetchSongs();
-  }, []);
+  }, [getSongCubes]);
 
   const handlePlay = (songId) => {
     // Implement the logic for viewing song details
@@ -44,14 +45,14 @@ function SongsList() {
     }).then(async (willDelete) => {
       if (willDelete) {
         try {
-          const response = await axios.delete(`api/songData/${songId}`);
-          console.log(response);
+          await deleteSongCubes(songId).unwrap();
+          // console.log(response);
           swal("Poof! Your song has been deleted!", {
             icon: "success",
           });
           fetchSongs(); // Re-fetch songs after deletion to update the UI
         } catch (error) {
-          console.error('Error deleting song:', error);
+          console.error("Error deleting song:", error);
           swal("Failed to delete the song", {
             icon: "error",
           });
@@ -62,63 +63,62 @@ function SongsList() {
     });
   };
 
-  if(loading){
-    return <>
-    <HamsterWheel/>
-    </>
+  if (isLoading) {
+    return (
+      <>
+        <HamsterWheel />
+      </>
+    );
   }
-
 
   return (
     <div className="songsList-main mt-5 bg-white">
       <h2 className="text-center my-4">Saved Songs</h2>
-      <div className='table-responsive'>
-      
+      <div className="table-responsive">
         <table className="table table-striped table-bordered ">
           <thead>
             <tr>
-                <th>S NO</th>
+              <th>S NO</th>
               <th>Song Name</th>
               <th>No of Cubes</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {songs.length === 0 ? (
-              <tr>
-                <td colSpan="4" className="text-center">No songs available</td>
-              </tr>
-            ) : (
-              songs.map((song,index) => (
+            {songs?.length ? (
+              songs?.map((song, index) => (
                 <tr key={index}>
-                    <td>{index+1}</td>
+                  <td>{index + 1}</td>
                   <td>{song.songName}</td>
                   {/* <td>{new Date(song.createdAt).toLocaleString()}</td> */}
-                  <td>{song?.cubes?.length ||""}</td>
-                  <td className=''>
-                    <button 
-                      className="btn btn-success m-1 text-white btn-custom" 
+                  <td>{song?.cubes?.length || ""}</td>
+                  <td className="">
+                    <button
+                      className="btn btn-success m-1 text-white btn-custom"
                       onClick={() => handlePlay(song._id)}
                     >
                       Play
                     </button>
-                    <button 
-                      className="btn btn-info m-1 btn-custom" 
-                      // onClick={() => handleEdit(song._id)}
-                    ><Link to={`/viewSong/${song._id}`} className='text-decoration-none text-white'> view</Link>
-                     
-                    </button>
-                    <button 
-                      className="btn btn-warning m-1 btn-custom" 
-                      // onClick={() => handleEdit(song._id)}
+                    <Link
+                      to={`/viewSong/${song._id}`}
+                      className="text-decoration-none text-white"
                     >
-                      <Link to={`/updateSong/${song._id}`} className='text-decoration-none text-white'> 
-                      Edit
-                      </Link>
-                     
-                    </button>
-                    <button 
-                      className="btn btn-danger m-1 btn-custom" 
+                      {" "}
+                      <button className="btn btn-info m-1 btn-custom text-white">
+                        view
+                      </button>
+                    </Link>
+
+                    <Link
+                      to={`/updateSong/${song._id}`}
+                      className="text-decoration-none text-white"
+                    >
+                      <button className="btn btn-warning m-1 btn-custom text-white">
+                        Edit
+                      </button>
+                    </Link>
+                    <button
+                      className="btn btn-danger m-1 btn-custom"
                       onClick={() => handleDelete(song._id)}
                     >
                       Delete
@@ -126,16 +126,17 @@ function SongsList() {
                   </td>
                 </tr>
               ))
-            )}
+            ):(
+              <tr>
+                <td colSpan="4" className="text-center">
+                  No songs available
+                </td>
+              </tr>
+            )
+          }
           </tbody>
         </table>
-
       </div>
-
-      
-    {/* <button className='btn btn-success text-white'>
-        <Link to="/addSong" className='text-decoration-none text-white'>Add Song</Link>
-    </button> */}
     </div>
   );
 }

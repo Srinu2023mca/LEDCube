@@ -3,6 +3,7 @@ import axios from '../../axios';
 import swal from 'sweetalert';
 import { useParams} from 'react-router-dom';
 import HamsterWheel from '../LoadingHamster';
+import { useGetSongCubesByIdMutation } from '../../app/service/SongCubesSlice';
 
 const ViewSong = () => {
 
@@ -13,15 +14,17 @@ const ViewSong = () => {
   const { id } = useParams();
   // console.log(id)
 
+ const [getSongCubes, isLoading] = useGetSongCubesByIdMutation()
+
   useEffect(()=>{
     setSpinner(true)
     const getSong = async()=>{
 
     try{
       
-        const response =await axios.get(`api/songData/${id}`);
-        const data = await response.data;
-        // console.log(data)
+        const response =await getSongCubes(id).unwrap();
+        const data = await response?.data;
+        // console.log(response)
         setSpinner(false)
         setSongName(data?.songName)
         setcubes(data?.cubes||[])

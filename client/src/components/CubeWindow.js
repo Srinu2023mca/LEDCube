@@ -1,7 +1,9 @@
 
 import React, { useState, useEffect } from 'react';
+import { useGetCubesMutation } from '../app/service/CubesSlice';
+import swal from 'sweetalert';
 
-function CubeWindow({ onAddEntry, onDelete, cubeData,cubes}) {
+function CubeWindow({ onAddEntry, onDelete, cubeData,duplicateCubes}) {
   const [title, setTitle] = useState('');
   const [startTime, setStartTime] = useState('00:00');
   const [endTime, setEndTime] = useState('');
@@ -11,16 +13,31 @@ function CubeWindow({ onAddEntry, onDelete, cubeData,cubes}) {
   const [effectType, setEffectType] = useState('');
   const [dataEntries, setDataEntries] = useState([]);
   const [editIndex, setEditIndex] = useState(null);
+  const [cubes,setCubes] = useState([] || '')
   const [selectedOption, setSelectedOption] = useState('');
+  const [selectedOptionDuplicate, setSelectedOptionDuplicate] = useState('');
+  
 
-  // console.log(cubes)
+  const [getCubes] =useGetCubesMutation();
+
+  const GetCubesData = async () =>{
+    try {
+      const response = await getCubes().unwrap()
+      // console.log(response)
+      setCubes(response?.data); // Assuming the response contains the list of songs
+    } catch (error) {
+      console.error('Error fetching songs data:', error);
+    } 
+
+  }
 
   // Sync cubeData when cubeData prop is updated
   useEffect(() => {
     if (cubeData) {
       setDataEntries(cubeData.entries || []);
       setTitle(cubeData.title || '');
-    }    
+    } 
+    GetCubesData()   
   }, [cubeData]);
 
 
@@ -99,7 +116,8 @@ function CubeWindow({ onAddEntry, onDelete, cubeData,cubes}) {
       }
 
       setDataEntries(updatedEntries);
-      onAddEntry({ title, entries: updatedEntries }); // Pass updated data to parent
+      // console.log(selectedOption)
+      onAddEntry({ title:selectedOption, entries: updatedEntries }); // Pass updated data to parent
       
       // Reset form
       setStartTime('');
@@ -125,7 +143,8 @@ function CubeWindow({ onAddEntry, onDelete, cubeData,cubes}) {
 
   const handleDeleteCube = () => {
     onDelete(title);
-    setTitle('');
+    // setTitle('');
+    setSelectedOption('')
     setDataEntries([]);
     setStartTime('');
     setEndTime('');
@@ -137,39 +156,46 @@ function CubeWindow({ onAddEntry, onDelete, cubeData,cubes}) {
   };
 
   const handleSelectData =(e) =>{
-    if(title===""){
-      alert("place enter cube Name")
+    // console.log(selectedOption)
+    if(selectedOption===""){
+      swal("Warning","Please select a Cube ", {
+        icon: "warning",
+      });
     }else{
-    setSelectedOption(e.target.value)
+    setSelectedOptionDuplicate(e.target.value)
     const getValue = e.target.value
-    const data = cubes.filter(cube => cube?.title === getValue) // Filter only cubes with title matching getValue
+    const data = duplicateCubes.filter(cube => cube?.title === getValue) 
     // console.log(data)
-    onAddEntry({title,entries:data[0].entries})
+    onAddEntry({title:selectedOption,entries:data[0].entries})
 
     }
   }
 
+  // console.log(cubes)
 
   return (
     <div className="w-100 mt-4 bg-white shadow p-2 rounded">
       <form onSubmit={handleAddData}>
-        <div className='d-flex align-items-center justify-content-center gap-3 mb-2'>
-          <input
-            type="text"
-            className="title form-control"
-            placeholder="Enter Cube Name"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-          />
+        <div className='d-flex align-items-center justify-content-between gap-2 mb-2 '>
+<div className="d-flex align-items-center justify-content-center w-50 ">
+              <label className='me-2'>Cube:</label>
+              
+              <select className="form-control" value={selectedOption||title} onChange={(e) => setSelectedOption(e.target.value)}>
+                <option value=''>Choose</option>
+                {cubes?.filter((data) => data !== null).map((option, index) => (
+                  <option key={index} value={option?.name}>{option?.name}</option>
+                ))}
+              </select>
+            </div>
         
         {/* Render Options Dynamically Based on cubeData */}
         
-            <div className="">
+            <div className="d-flex align-items-center justify-content-center w-50">
+              <label className='me-2'>Duplicate:</label>
               
-              <select className="form-control" value={selectedOption} onChange={(e) => handleSelectData(e)}>
-                <option value="">Choose cube</option>
-                {cubes?.map((option, index) => (
+              <select className="form-control" value={selectedOptionDuplicate} onChange={(e) => handleSelectData(e)}>
+                <option value="">Choose</option>
+                {duplicateCubes?.filter((data) => data !== null).map((option, index) => (
                   <option key={index} value={option?.title}>{option?.title}</option>
                 ))}
               </select>

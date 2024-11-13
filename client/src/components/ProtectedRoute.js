@@ -1,40 +1,50 @@
 // ProtectedRoute.js
-import React,{useEffect,useState} from "react";
-import { Navigate } from "react-router-dom";
-import axios from "../axios";
+import React,{useState,useEffect} from "react";
+import { Navigate} from "react-router-dom";
 import HamsterWheel from "../components/LoadingHamster/index";
+import { useGetUserMutation } from "../app/service/usersApiSlice";
+
+import { useSelector,useDispatch } from 'react-redux'
+import { setCredentials } from '../app/features/authSlice';
 
 const ProtectedRoute = ({ children }) => {
+  const [loading,setLoading] = useState(false)
 
-  const [loading,setLoading] = useState(true)
-  const [user,setUser] = useState(null)
+  const dispatch =useDispatch()
+
+  const { isAuthenticated } =  useSelector((state) => state.auth)
+  
+  const [getUser] = useGetUserMutation()
+
+  // console.log(isAuthenticated , loading);
 
   useEffect(()=>{
+    
     const fetchUserData = async()=>{
+      setLoading(true)
+
+      if(!isAuthenticated){
     try{
       
-        const response =await axios.get('api/auth/getMe');
-        const data = await response.data;
-        // console.log(response.data)
-        if(data?.status==='success'){
-          setLoading(false)
-          setUser(data.user)
+        const response =await getUser().unwrap();
+        // console.log(response)
+        if(response?.status==='success'){
+          dispatch(setCredentials(response.user))
         }
+        
         else{
-          setLoading(false)
           console.log("User Not Verified")
         }
+        
       }catch(error){
         console.log("Error",error)
-        setUser(null); // Ensure user state is cleared on error
-      }finally {
-        setLoading(false); // Always update loading state
       }
     }
+    setLoading(false)
+  }
 
     fetchUserData()
-  },[])
-
+  },[isAuthenticated,dispatch,getUser])
 
   if(loading){
     return <>
@@ -42,7 +52,9 @@ const ProtectedRoute = ({ children }) => {
     </>
   }
 
-  return user ? children : <Navigate to="/login" />;
+  
+
+  return isAuthenticated ? children : <Navigate to="/login" replace />;
 };
 
 export default ProtectedRoute;
