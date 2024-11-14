@@ -4,10 +4,18 @@ import { createSlice } from '@reduxjs/toolkit'
 
 // const initialState = { isAuthenticated: false, userInfo: null }
 
+// Safe parsing function for JSON from localStorage
+const parseJSON = (value, fallback) => {
+  try {
+    return JSON.parse(value) ?? fallback;
+  } catch (e) {
+    return fallback;
+  }
+};
 // Load initial authentication state from localStorage
 const initialState = {
   isAuthenticated: JSON.parse(localStorage.getItem('isAuthenticated')) || false,
-  userInfo: JSON.parse(localStorage.getItem('userInfo')) || null,
+  userInfo: parseJSON(localStorage.getItem('userInfo'), null),
 };
 
 const authSlice = createSlice({

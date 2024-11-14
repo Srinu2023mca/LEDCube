@@ -10,6 +10,8 @@ import Cubes from "./components/Cubes"
 import Login from "./components/pages/Login";
 import Forgot from "./components/pages/Forgot";
 import ResetPassword from "./components/pages/ResetPassword";
+import UpdateProfile from "./components/pages/UpdateProfile";
+import UpdatePassword from "./components/pages/UpdatePassword";
 
 import ProtectedRoute from "./components/ProtectedRoute"; // Import ProtectedRoute
 
@@ -72,6 +74,24 @@ const App = () => {
               <ProtectedRoute >
                 <Header/>
                 <ViewSong />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/updatePassword"
+            element={
+              <ProtectedRoute >
+                <Header/>
+                <UpdatePassword/>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/updateProfile"
+            element={
+              <ProtectedRoute >
+                <Header/>
+                <UpdateProfile />
               </ProtectedRoute>
             }
           />

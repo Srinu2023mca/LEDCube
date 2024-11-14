@@ -93,11 +93,11 @@ const Login = () => {
       </div>
         
         
-        <button type="submit" className="btn btn-primary w-50">
+        <button type="submit" className="btn btn-primary px-5">
         {isLoading ? <span className="spinner-border spinner-border-sm mx-2" role="status" aria-hidden="true"></span> : 'LogIn'}
         </button>
       </form>
-      <Link to={"/forgot"} className="text-decoration-none w-100 ps-4 pb-3">Forget Password</Link>
+      <Link to={"/forgot"} className="text-decoration-none  w-100 mb-3 text-end pe-3">Forgot Password</Link>
       </div>
     </div>
   );

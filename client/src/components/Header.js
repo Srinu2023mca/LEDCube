@@ -60,13 +60,13 @@ const Header = () => {
         >
           <span className="navbar-toggler-icon"></span>
         </button>
-        <div className="collapse navbar-collapse dropdown-overlay w-100" id="navbarNav">
-          <ul className="navbar-nav row w-75 mt-3 gap-2">
+        <div className="collapse navbar-collapse dropdown-overlay" id="navbarNav">
+          <ul className="navbar-nav row gap-2 ps-2 py-2 w-100">
             <li className="nav-item  col"  >
             <NavLink
             to="/"
             className={({ isActive }) => 
-              isActive ? "text-decoration-none active-link btn btn-primary w-75" : "text-decoration-none btn border-primary text-primary w-75"
+              isActive ? "text-decoration-none active-link btn btn-primary w-100" : "text-decoration-none btn border-primary text-primary w-100"
             }
           >
             Songs List
@@ -76,7 +76,7 @@ const Header = () => {
             <NavLink
             to="/addSong"
             className={({ isActive }) => 
-              isActive ? "text-decoration-none active-link btn btn-primary w-75" : "text-decoration-none btn border-primary text-primary w-75"
+              isActive ? "text-decoration-none active-link btn btn-primary w-100" : "text-decoration-none btn border-primary text-primary w-100"
             }
           >
             Add Song
@@ -86,7 +86,7 @@ const Header = () => {
             <NavLink
             to="/cubes"
             className={({ isActive }) => 
-              isActive ? "text-decoration-none active-link btn btn-primary w-75" : "text-decoration-none btn border-primary text-primary w-75"
+              isActive ? "text-decoration-none active-link btn btn-primary w-100" : "text-decoration-none btn border-primary text-primary w-100"
             }
           >
             Cubes
@@ -109,21 +109,21 @@ const Header = () => {
        
       </button>
       <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <li className="px-3">
+        {/* <li className="px-3">
         {user?.email || "User Email"}
-        </li>
+        </li> */}
         <li>
           <Link to={"/updateEmail"} className="dropdown-item" >
             Profile Update
           </Link>
         </li>
         <li>
-          <Link to={"/resetPassword"} className="dropdown-item" >
-            Reset Password
+          <Link to={"/updatePassword"} className="dropdown-item" >
+            Update Password
           </Link>
         </li>
         <li>
-        <div className="ms-3 btn btn-info w-50 text-white" onClick={handleLogout}>
+        <div className="ms-3 btn btn-info w-75 text-white" onClick={handleLogout}>
         LogOut
       </div>
         </li>

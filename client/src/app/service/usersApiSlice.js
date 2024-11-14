@@ -61,16 +61,16 @@ export const userApiSlice = apiSlice.injectEndpoints({
     }),
 
     
-    updateUser: builder.mutation({
+    updateProfile: builder.mutation({
       query: (data) => ({
-        url: '/api/v1/users/profile',
+        url: '/api/v1/auth/profile',
         method: 'PUT',
         body: data,
       }),
     }),
     updatePassword: builder.mutation({
       query: (data) => ({
-        url: '/api/v1/users/updatePassword',
+        url: '/api/v1/auth/updatePassword',
         method: 'PATCH',
         body: data,
       }),
@@ -93,7 +93,7 @@ export const {
   useResendotpMutation,
   useForgotMutation,
   useResetMutation,
-  useUpdateUserMutation,
+  useUpdateProfileMutation,
   useUpdatePasswordMutation,
   // useGetVerificationQuery,
   useGetUserMutation,

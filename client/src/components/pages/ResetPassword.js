@@ -58,10 +58,10 @@ const navigate =useNavigate();
         />
       </div>
       <div className="form-group d-flex align-items-center justify-content-between  w-100">
-        <label className="form-label w-25">Password:</label>
+        <label className="form-label w-25">Confirm Password:</label>
         <input
           type="password"
-          placeholder="Conform Password"
+          placeholder="Confirm Password"
           value={conformPassword}
           onChange={(e) => setConformPassword(e.target.value)}
           className="form-control mb-2"

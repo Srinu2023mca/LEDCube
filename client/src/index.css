@@ -56,30 +56,22 @@ code {
 /* header */
 .header{
   width: 100vw;
+  height: 84px;
   background-color: rgba(255, 250, 250, 0.867);
   position: relative;
   z-index: 10;
-}
-
-.active-link{
-  text-align: center;
-
-}
-
-.cut-btn{
-  width: 200px;
+  /* padding: 0px 10px; */
+  justify-items: center;
 }
 
 .dropdown-overlay {
   position: absolute;
-  top: 100%; /* Position dropdown directly below the header */
-  left: 0;
-  right: 0;
-  background-color: #fff;
+  width: 240px !important;
+  top: 100%;
+  left:0; 
+  background-color:white;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
   z-index: 9;
-  padding-left: 12px;
-  padding-bottom: 12px;
   border-radius: 10px;
 }
 
@@ -87,11 +79,13 @@ code {
   display: block;
 }
 
+
 @media (min-width: 992px) {
   /* Revert dropdown positioning on larger screens */
   .dropdown-overlay {
     position: static;
     box-shadow: none;
+    min-width:700px !important;
   }
 }
 
