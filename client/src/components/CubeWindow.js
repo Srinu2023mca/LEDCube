@@ -176,9 +176,9 @@ function CubeWindow({ onAddEntry, onDelete, cubeData,duplicateCubes}) {
   return (
     <div className="w-100 mt-4 bg-white shadow p-2 rounded">
       <form onSubmit={handleAddData}>
-        <div className='d-flex align-items-center justify-content-between gap-2 mb-2 '>
-<div className="d-flex align-items-center justify-content-center w-50 ">
-              <label className='me-2'>Cube:</label>
+        <div className='d-flex flex-column  align-items-center justify-content-center gap-2 mb-2 flex-md-row'>
+<div className="d-flex align-items-center justify-content-center gap-2 " style={{width:"100%"}}>
+              <label className='w-25'>Cube:</label>
               
               <select className="form-control" value={title} onChange={(e) => setTitle(e.target.value)}>
                 <option value=''>Choose</option>
@@ -190,8 +190,8 @@ function CubeWindow({ onAddEntry, onDelete, cubeData,duplicateCubes}) {
         
         {/* Render Options Dynamically Based on cubeData */}
         
-            <div className="d-flex align-items-center justify-content-center w-50">
-              <label className='me-2'>Duplicate:</label>
+            <div className="d-flex align-items-center justify-content-center gap-2 " style={{width:"100%"}}>
+              <label className='w-25'>Duplicate:</label>
               
               <select className="form-control" value={selectedOptionDuplicate} onChange={(e) => handleSelectData(e)}>
                 <option value="">Choose</option>
@@ -200,9 +200,12 @@ function CubeWindow({ onAddEntry, onDelete, cubeData,duplicateCubes}) {
                 ))}
               </select>
             </div>
+            <div className='text-center' style={{width:"100%"}}>
+            <button className='btn btn-danger w-50' type="button" onClick={handleDeleteCube}>Delete</button>
+            </div>
         
           
-          <button className='btn btn-danger' type="button" onClick={handleDeleteCube}>Delete</button>
+          
         </div>
         <div className="row">
           <div className="col">

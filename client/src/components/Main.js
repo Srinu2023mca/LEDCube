@@ -137,7 +137,7 @@ function Main() {
             setSelectedCubes={setSelectedCubes}
           />
         ))}
-        <div className='d-flex align-items-center justify-content-center gap-3'>
+        <div className='d-flex align-items-center justify-content-around gap-3'>
           <button className="btn btn-success mt-3 w-25" onClick={addCube}>
             Add Cube
           </button>
