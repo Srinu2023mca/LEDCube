@@ -1,5 +1,4 @@
 import React, { useState,useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import swal from 'sweetalert';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCredentials } from "../../app/features/authSlice";
@@ -9,7 +8,6 @@ const UpdateProfile = () => {
   const [name,setName] = useState("")
   const [email, setEmail] = useState("");
   
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state?.auth.userInfo);
 //   console.log(user)

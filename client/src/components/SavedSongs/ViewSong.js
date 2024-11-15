@@ -1,5 +1,4 @@
 import React, {useState,useEffect} from 'react'
-import axios from '../../axios';
 import swal from 'sweetalert';
 import { useParams} from 'react-router-dom';
 import HamsterWheel from '../LoadingHamster';
@@ -7,7 +6,6 @@ import { useGetSongCubesByIdMutation } from '../../app/service/SongCubesSlice';
 
 const ViewSong = () => {
 
-  const [Spinner, setSpinner] = useState(false);
   const [songName,setSongName]=useState('')
   const [cubes,setcubes] =useState([] ||"");
 
@@ -17,7 +15,6 @@ const ViewSong = () => {
  const [getSongCubes, isLoading] = useGetSongCubesByIdMutation()
 
   useEffect(()=>{
-    setSpinner(true)
     const getSong = async()=>{
 
     try{
@@ -25,13 +22,11 @@ const ViewSong = () => {
         const response =await getSongCubes(id).unwrap();
         const data = await response?.data;
         // console.log(response)
-        setSpinner(false)
         setSongName(data?.songName)
         setcubes(data?.cubes||[])
        
       }catch(error){
         console.log("Error",error)
-        setSpinner(false);
         swal("Error", "Failed to fetch song data", "error");
         
       }
@@ -42,7 +37,7 @@ const ViewSong = () => {
     getSong()
   },[id])
 
-  if(Spinner){
+  if(isLoading){
     return <>
     <HamsterWheel/>
     </>

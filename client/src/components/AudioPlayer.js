@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-// import { Link } from 'react-router-dom';
 
 function AudioPlayer({songName ,setSongName}) {
+
   const [audioSrc, setAudioSrc] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -10,8 +10,6 @@ function AudioPlayer({songName ,setSongName}) {
     if (file) {
       setSongName(file.name)
       setAudioSrc(URL.createObjectURL(file));
-
-      
     }
   };
 
@@ -24,13 +22,12 @@ function AudioPlayer({songName ,setSongName}) {
 
   return (
     <div className="mt-2 shadow p-2 rounded">
-      <div className='d-flex align-items-center justify-content-between'>
+      <div className='d-flex align-items-center justify-content-between p-2'>
       <h5 className=''>{songName || 'Please select Song'}</h5>
-      {/* <button className='btn btn-success'><Link to="/songsList" className='text-decoration-none text-white'> Songs List</Link></button> */}
       </div>
       
-      <div className='d-flex align-items-center justify-content-center  gap-3 my-3'>
-        <div className='bg-white border d-flex align-items-center rounded w-75'>
+      <div className='row align-items-center justify-content-around  gap-3 my-3'>
+        <div className=' col bg-white border d-flex align-items-center rounded ms-3'>
 
         <input type="file" accept="audio/*" onChange={handleFileChange} className="form-control" style={{width:"100px"}}  id="fileInput" />
       <label htmlFor="fileInput" className="form-label ms-3 mt-1">
@@ -38,12 +35,15 @@ function AudioPlayer({songName ,setSongName}) {
         </label>
 
         </div>
-      
-      <button onClick={playAudio} className="btn btn-primary px-3 w-25" disabled={!audioSrc}>
+        <div className='col'>
+        <button onClick={playAudio} className="btn btn-primary px-3" disabled={!audioSrc}>
         Play
-      </button>
+        </button>
+        </div>
+      
+      
       </div>
-      <div className='text-center'>
+      <div className='text-center w-100 bg-info'>
       {audioSrc  &&  songName!=="" && (
         <audio id="audioPlayer" src={audioSrc} controls hidden={!isPlaying}></audio>
       )}

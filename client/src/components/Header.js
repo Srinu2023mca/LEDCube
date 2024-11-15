@@ -1,11 +1,21 @@
-import React from "react";
+import React,{useState} from "react";
 import { Link, NavLink } from "react-router-dom";
 import swal from 'sweetalert';
 import { useNavigate } from "react-router-dom";
 import { useLogoutUserMutation } from "../app/service/usersApiSlice";
 import { useSelector,useDispatch } from "react-redux";
 import { logout } from "../app/features/authSlice";
+
 const Header = () => {
+  const [isNavbarCollapsed, setIsNavbarCollapsed] = useState(true);
+
+  const handleNavLinkClick = () => {
+    setIsNavbarCollapsed(true); // Collapse the navbar when a link is clicked
+  };
+
+  const toggleNavbar = () => {
+    setIsNavbarCollapsed(!isNavbarCollapsed); // Toggle navbar open/close
+  };
 
   const [logOut] =useLogoutUserMutation();
 
@@ -52,19 +62,23 @@ const Header = () => {
         <button 
           className="navbar-toggler" 
           type="button" 
-          data-bs-toggle="collapse" 
-          data-bs-target="#navbarNav" 
+          onClick={toggleNavbar} // Toggle navbar on button click
+          // data-bs-toggle="collapse" 
+          // data-bs-target="#navbarNav" 
           aria-controls="navbarNav" 
           aria-expanded="false" 
           aria-label="Toggle navigation"
+          id="button-toggler"
         >
           <span className="navbar-toggler-icon"></span>
         </button>
-        <div className="collapse navbar-collapse dropdown-overlay" id="navbarNav">
+        <div className={`collapse navbar-collapse dropdown-overlay ${isNavbarCollapsed ? '' : 'show'}`} id="navbarNav">
           <ul className="navbar-nav row gap-2 ps-2 py-2 w-100">
             <li className="nav-item  col"  >
             <NavLink
+                      
             to="/"
+            onClick={handleNavLinkClick} // Collapse navbar on link click
             className={({ isActive }) => 
               isActive ? "text-decoration-none active-link btn btn-primary w-100" : "text-decoration-none btn border-primary text-primary w-100"
             }
@@ -75,6 +89,7 @@ const Header = () => {
             <li className="nav-item col">
             <NavLink
             to="/addSong"
+            onClick={handleNavLinkClick} // Collapse navbar on link click
             className={({ isActive }) => 
               isActive ? "text-decoration-none active-link btn btn-primary w-100" : "text-decoration-none btn border-primary text-primary w-100"
             }
@@ -85,6 +100,7 @@ const Header = () => {
             <li className="nav-item col">
             <NavLink
             to="/cubes"
+            onClick={handleNavLinkClick} // Collapse navbar on link click
             className={({ isActive }) => 
               isActive ? "text-decoration-none active-link btn btn-primary w-100" : "text-decoration-none btn border-primary text-primary w-100"
             }
@@ -95,7 +111,7 @@ const Header = () => {
           </ul>
         </div>
       </div>
-    </nav>
+      </nav>
     <div className="dropdown-main">
       
       <button

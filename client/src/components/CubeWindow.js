@@ -14,7 +14,7 @@ function CubeWindow({ onAddEntry, onDelete, cubeData,duplicateCubes}) {
   const [dataEntries, setDataEntries] = useState([]);
   const [editIndex, setEditIndex] = useState(null);
   const [cubes,setCubes] = useState([] || '')
-  const [selectedOption, setSelectedOption] = useState('');
+  // const [selectedOption, setSelectedOption] = useState('');
   const [selectedOptionDuplicate, setSelectedOptionDuplicate] = useState('');
   
 
@@ -117,7 +117,7 @@ function CubeWindow({ onAddEntry, onDelete, cubeData,duplicateCubes}) {
 
       setDataEntries(updatedEntries);
       // console.log(selectedOption)
-      onAddEntry({ title:selectedOption, entries: updatedEntries }); // Pass updated data to parent
+      onAddEntry({ title, entries: updatedEntries }); // Pass updated data to parent
       
       // Reset form
       setStartTime('');
@@ -143,8 +143,8 @@ function CubeWindow({ onAddEntry, onDelete, cubeData,duplicateCubes}) {
 
   const handleDeleteCube = () => {
     onDelete(title);
-    // setTitle('');
-    setSelectedOption('')
+    setTitle('');
+    // setSelectedOption('')
     setDataEntries([]);
     setStartTime('');
     setEndTime('');
@@ -157,7 +157,7 @@ function CubeWindow({ onAddEntry, onDelete, cubeData,duplicateCubes}) {
 
   const handleSelectData =(e) =>{
     // console.log(selectedOption)
-    if(selectedOption===""){
+    if(title===""){
       swal("Warning","Please select a Cube ", {
         icon: "warning",
       });
@@ -166,7 +166,7 @@ function CubeWindow({ onAddEntry, onDelete, cubeData,duplicateCubes}) {
     const getValue = e.target.value
     const data = duplicateCubes.filter(cube => cube?.title === getValue) 
     // console.log(data)
-    onAddEntry({title:selectedOption,entries:data[0].entries})
+    onAddEntry({title,entries:data[0].entries})
 
     }
   }
@@ -180,7 +180,7 @@ function CubeWindow({ onAddEntry, onDelete, cubeData,duplicateCubes}) {
 <div className="d-flex align-items-center justify-content-center w-50 ">
               <label className='me-2'>Cube:</label>
               
-              <select className="form-control" value={selectedOption||title} onChange={(e) => setSelectedOption(e.target.value)}>
+              <select className="form-control" value={title} onChange={(e) => setTitle(e.target.value)}>
                 <option value=''>Choose</option>
                 {cubes?.filter((data) => data !== null).map((option, index) => (
                   <option key={index} value={option?.name}>{option?.name}</option>
