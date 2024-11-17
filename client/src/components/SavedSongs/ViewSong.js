@@ -12,7 +12,7 @@ const ViewSong = () => {
   const { id } = useParams();
   // console.log(id)
 
- const [getSongCubes, isLoading] = useGetSongCubesByIdMutation()
+ const [getSongCubes, {isLoading}] = useGetSongCubesByIdMutation()
 
   useEffect(()=>{
     const getSong = async()=>{

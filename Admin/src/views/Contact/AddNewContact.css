@@ -1,0 +1,34 @@
+.form-container {
+  margin-top: 0;
+}
+
+.contact-form {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-title {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 10px;
+}
+
+@media (max-width: 767px) {
+  .form-container {
+    padding: 15px;
+  }
+
+  .contact-form {
+    padding: 15px;
+  }
+
+  .submit-btn {
+    padding: 12px;
+  }
+}
