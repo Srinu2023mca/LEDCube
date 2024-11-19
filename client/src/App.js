@@ -2,11 +2,11 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
-import Main from "./components/Main";
+import Main from "./components/main/Main";
 import SongsList from "./components/SavedSongs/SongsList";
 import UpdateSong from "./components/SavedSongs/UpdateSong";
 import ViewSong from "./components/SavedSongs/ViewSong";
-import Cubes from "./components/Cubes"
+import Cubes from "./components/main/Cubes"
 import Login from "./components/pages/Login";
 import Forgot from "./components/pages/Forgot";
 import ResetPassword from "./components/pages/ResetPassword";

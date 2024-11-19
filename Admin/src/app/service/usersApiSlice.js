@@ -11,13 +11,13 @@ export const userApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
-    register: builder.mutation({
-      query: (data) => ({
-        url: '/api/v1/auth/signup',
-        method: 'POST',
-        body: data,
-      }),
-    }),
+    // register: builder.mutation({
+    //   query: (data) => ({
+    //     url: '/api/v1/auth/signup',
+    //     method: 'POST',
+    //     body: data,
+    //   }),
+    // }),
     forgot: builder.mutation({
       query: (data) => ({
         url: '/api/v1/auth/forgot',
@@ -56,7 +56,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
     }),
 
     getUser: builder.mutation({
-      query: (data) => ({
+      query: () => ({
         url: '/api/v1/auth/getMe',
         method: 'GET',
       }),
@@ -69,7 +69,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useLoginMutation,
-  useRegisterMutation,
+  // useRegisterMutation,
   useForgotMutation,
   useLogoutUserMutation,
   useResetMutation,

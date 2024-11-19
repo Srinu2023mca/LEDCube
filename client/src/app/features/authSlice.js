@@ -2,21 +2,21 @@
 
 import { createSlice } from '@reduxjs/toolkit'
 
-// const initialState = { isAuthenticated: false, userInfo: null }
+const initialState = { isAuthenticated: false, userInfo: null }
 
 // Safe parsing function for JSON from localStorage
-const parseJSON = (value, fallback) => {
-  try {
-    return JSON.parse(value) ?? fallback;
-  } catch (e) {
-    return fallback;
-  }
-};
-// Load initial authentication state from localStorage
-const initialState = {
-  isAuthenticated: JSON.parse(localStorage.getItem('isAuthenticated')) || false,
-  userInfo: parseJSON(localStorage.getItem('userInfo'), null),
-};
+// const parseJSON = (value, fallback) => {
+//   try {
+//     return JSON.parse(value) ?? fallback;
+//   } catch (e) {
+//     return fallback;
+//   }
+// };
+// // Load initial authentication state from localStorage
+// const initialState = {
+//   isAuthenticated: JSON.parse(localStorage.getItem('isAuthenticated')) || false,
+//   userInfo: parseJSON(localStorage.getItem('userInfo'), null),
+// };
 
 const authSlice = createSlice({
   name: 'auth',
@@ -27,8 +27,8 @@ const authSlice = createSlice({
       state.userInfo = action.payload;
 
       // Persist state in localStorage
-      localStorage.setItem('isAuthenticated', JSON.stringify(true));
-      localStorage.setItem('userInfo', JSON.stringify(action.payload));
+      // localStorage.setItem('isAuthenticated', JSON.stringify(true));
+      // localStorage.setItem('userInfo', JSON.stringify(action.payload));
 
     },
     logout: (state) => {
@@ -36,8 +36,8 @@ const authSlice = createSlice({
       state.userInfo = null;
       
        // Remove from localStorage
-      localStorage.removeItem('isAuthenticated');
-      localStorage.removeItem('userInfo');
+      // localStorage.removeItem('isAuthenticated');
+      // localStorage.removeItem('userInfo');
     },
   },
 })

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import AudioPlayer from '../AudioPlayer';
-import CubeWindow from '../CubeWindow';
+import AudioPlayer from '../main/AudioPlayer';
+import CubeWindow from '../main/CubeWindow';
 import swal from 'sweetalert';
 import { useParams,useNavigate } from 'react-router-dom';
 import HamsterWheel from '../LoadingHamster';

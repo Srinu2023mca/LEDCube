@@ -1,16 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { CTable, CTableHead, CTableBody, CTableRow, CTableHeaderCell, CTableDataCell, CPagination, CPaginationItem, CSpinner ,CButton} from '@coreui/react';
-import { useGetCustomersMutation } from '../../app/service/usersApiSlice';
-import { Link } from 'react-router-dom';
-
+import { ToggleButton, ToggleButtonGroup } from "@themesberg/react-bootstrap";
+import { useGetCustomersMutation, useUpdateActiveMutation, useResetCustomerMutation } from '../../app/service/customersApiSlice';
+import { Link} from 'react-router-dom';
+import { toast } from 'react-toastify';
 const UsersTable = () => {
   const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
 
+  
+
   // Fetch users data
   const [getUsers,{isLoading}] = useGetCustomersMutation();
+  const [updateActive] =useUpdateActiveMutation();
+  const [resetCustomer] =useResetCustomerMutation();
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -20,8 +24,6 @@ const UsersTable = () => {
         setUsers(response.data);
       } catch (error) {
         console.error("Error fetching users:", error);
-      } finally {
-        setLoading(false);
       }
     };
     fetchUsers();
@@ -35,36 +37,61 @@ const UsersTable = () => {
 
   const handlePageChange = (page) => setCurrentPage(page);
 
-  // Action handlers
-  const handleEdit = (userId) => {
-    console.log("Edit user:", userId);
-    // Add edit logic here
+
+  const handleResetPassword = async (id) => {
+    // console.log(id);
+    try {
+      const response = await resetCustomer({id}).unwrap()
+      // console.log(response);
+      if(response.status==="success"){
+        toast.success("Password Reset Successfull!..")
+  }
+    } catch (error) {
+      console.error("Error updating ", error);
+      toast.error("Error to password reset..!")
+    }
+
   };
 
-  const handleSuspend = (userId) => {
-    console.log("Suspend user:", userId);
-    // Add suspend logic here
+  const toggleStatus = async (id, isActive) => {
+    // console.log(id,isActive)
+    try {
+      const response = 
+      await updateActive({id,data:{"isActive":!isActive}}).unwrap()
+      console.log(response);
+      if(response.status==="success"){
+        toast.success("Status Updated Successfull!..")
+      
+      // Update the local state to reflect the new isActive status
+    setUsers((prevUsers) =>
+      prevUsers.map((user) =>
+        user._id === id ? { ...user, isActive:!isActive } : user
+      )
+    );
+  }
+    } catch (error) {
+      console.error("Error updating isActive:", error);
+      toast.error("Error to Status updated!..")
+    }
   };
 
-  const handleResetPassword = (userId) => {
-    console.log("Reset password for user:", userId);
-    // Add reset password logic here
-  };
-
-  if (loading) return <CSpinner color="primary" />;
+  if (isLoading) return <CSpinner color="primary" />;
 
   return (
     <>
     <div className='d-flex align-items-center justify-content-between'>
       <h2>Customers</h2>
       <button className='btn btn-success'><Link to={"/customers/addCustomer"} className='text-decoration-none text-white'> + Add</Link></button>
+      
     </div>
+    <div className='table-responsive'>
       <CTable striped hover>
         <CTableHead>
           <CTableRow>
             <CTableHeaderCell scope="col">Id</CTableHeaderCell>
             <CTableHeaderCell scope="col">Name</CTableHeaderCell>
             <CTableHeaderCell scope="col">Email</CTableHeaderCell>
+            <CTableHeaderCell scope="col">Status</CTableHeaderCell>
             <CTableHeaderCell scope="col">Actions</CTableHeaderCell>
           </CTableRow>
         </CTableHead>
@@ -72,16 +99,38 @@ const UsersTable = () => {
           {currentUsers.map((user, index) => (
             <CTableRow key={index}>
               <CTableDataCell>{indexOfFirstUser + index + 1}</CTableDataCell>
-              <CTableDataCell>{user.name}</CTableDataCell>
-              <CTableDataCell>{user.email}</CTableDataCell>
-              <CTableDataCell>
-              <CButton color="primary" size="sm" className="me-1" onClick={() => handleEdit(user.id)}>
+              <CTableDataCell>{user?.name}</CTableDataCell>
+              <CTableDataCell>{user?.email}</CTableDataCell>
+              <CTableDataCell>{user?.isActive ? "Active" : "Suspended" }</CTableDataCell>
+              <CTableDataCell className='d-flex  align-items-center justify-content-start'>
+                <Link to={`/customers/editCustomer/${user?._id}`}>
+              <CButton color="primary"  className="me-2">
                   Edit
                 </CButton>
-                <CButton color="warning" size="sm" className="me-1" onClick={() => handleSuspend(user.id)}>
-                  Suspend
-                </CButton>
-                <CButton color="danger" size="sm" onClick={() => handleResetPassword(user.id)}>
+                </Link>
+                <ToggleButtonGroup
+                        type="radio"
+                        name={`statusToggle${user?._id}`}
+                        value={user?.isActive}
+                      >
+                        <ToggleButton
+                          value={true}
+                          variant="success"
+                          disabled={user?.isActive}
+                          onClick={() => toggleStatus(user?._id, user?.isActive)}
+                        >
+                          Active
+                        </ToggleButton>
+                        <ToggleButton
+                          value={false}
+                          variant="warning"
+                          disabled={!user.isActive}
+                          onClick={() => toggleStatus(user?._id, user?.isActive)}
+                        >
+                          Suspended
+                        </ToggleButton>
+                      </ToggleButtonGroup>
+                <CButton color="danger" className="ms-2 " onClick={() => handleResetPassword(user?._id)}>
                   Reset Password
                 </CButton>
               </CTableDataCell>
@@ -89,7 +138,7 @@ const UsersTable = () => {
           ))}
         </CTableBody>
       </CTable>
-
+      </div>
       <CPagination align="center">
         <CPaginationItem
           disabled={currentPage === 1}

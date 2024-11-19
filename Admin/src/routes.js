@@ -1,7 +1,7 @@
 import React from 'react'
 import Profile from './views/profile/Profile'
 import ChangePassword from './views/profile/ChangePassword'
-import { element } from 'prop-types'
+// import { element } from 'prop-types'
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 const Customers = React.lazy(() => import('./views/customers/Customers.js'))
@@ -15,8 +15,8 @@ const routes = [
   { path: '/', exact: true, name: 'Home', element: Dashboard },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   { path: '/customers', name: 'Customers', element: Customers },
-  { path: '/customers/addCustomer', name: ' Add Customers', element: AddCustomers },
-  { path: '/customers/EditCustomer', name: ' Add Customers', element: EditCustomers },
+  { path: '/customers/addCustomer', name: ' Add Customer', element: AddCustomers },
+  { path: '/customers/editCustomer/:id', name: 'Edit Customer', element: EditCustomers },
 
   { path: '/profile', name: 'Profile', element: Profile },
   { path: '/profile/change-password', name: 'Change Password', element: ChangePassword },

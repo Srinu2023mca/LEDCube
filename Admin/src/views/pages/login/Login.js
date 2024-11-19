@@ -1,8 +1,8 @@
 // src/views/pages/login/Login.js
 
-import React, { useState, useEffect } from 'react'
+import  { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch,} from 'react-redux'
 import {
   CButton,
   CCard,
@@ -27,11 +27,12 @@ import './Login.css' // Import the custom CSS file
 const Login = () => {
   const [email, setEmail] = useState('vemulasrinuiso@gmail.com')
   const [password, setPassword] = useState('Srinu53@')
+  const [loading,setLoading] =useState(true)
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const [login, { isLoading }] = useLoginMutation()
+  const [login, {isLoading}] = useLoginMutation()
   const [getUser] =useGetUserMutation()
 
   useEffect(() => {
@@ -44,17 +45,19 @@ const Login = () => {
       }
     }catch(error){
       console.log(error)
+    }finally{
+      setLoading(false)
     }
     }
 
     fetchData()
-  }, [navigate])
+  }, [navigate,getUser])
 
   const submitHandler = async (e) => {
     e.preventDefault()
     try {
       const res = await login({ email, password }).unwrap();
-      console.log(res)
+      // console.log(res)
       dispatch(setCredentials({ ...res }))
       toast.success('Login Successful! Welcome back!.')
       navigate('/dashboard')
@@ -63,6 +66,8 @@ const Login = () => {
       toast.error(err?.data?.message || err.error)
     }
   }
+
+  if (loading) return <CSpinner color="primary" />;
 
   return (
     <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center justify-content-center">
@@ -133,11 +138,6 @@ const Login = () => {
                         </Link>
                       </CCol>
                     </CRow>
-                    {/* <CRow className="login-footer">
-                      <CCol className="text-right">
-                        Don't have an account? <Link to="/register">Sign Up</Link>
-                      </CCol>
-                    </CRow> */}
                   </CForm>
                 </CCardBody>
               </CCard>

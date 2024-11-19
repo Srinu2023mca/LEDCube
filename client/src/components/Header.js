@@ -129,7 +129,7 @@ const Header = () => {
         {user?.email || "User Email"}
         </li> */}
         <li>
-          <Link to={"/updateEmail"} className="dropdown-item" >
+          <Link to={"/updateProfile"} className="dropdown-item" >
             Profile Update
           </Link>
         </li>

@@ -1,30 +1,36 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { 
   CButton, CForm, CFormLabel, CFormInput, CSpinner 
 } from '@coreui/react';
-import { useRegisterMutation } from '../../app/service/usersApiSlice';
-import { Link } from 'react-router-dom';
+import { useAddCustomerMutation } from '../../app/service/customersApiSlice';
+import { Link ,useNavigate} from 'react-router-dom';
+import { toast } from 'react-toastify';
 
-const AddUser = ({ onUserAdded }) => {
+const AddUser = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [role, setRole] = useState('');
+  // const [role, setRole] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const [addUser] = useRegisterMutation();
+  const navigate =useNavigate();
+
+  const [addUser] = useAddCustomerMutation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
       const newUser = { name, email};
-      await addUser(newUser);
-    //   onUserAdded(newUser); // Callback to refresh user list or notify success
+      const res = await addUser(newUser).unwrap();
+      console.log(res)
+      toast.success(res?.message||"User Created")
       setName('');
       setEmail('');
+      navigate("/customers")
       
     } catch (error) {
       console.error("Error adding user:", error);
+      toast.error("Error adding User")
     } finally {
       setLoading(false);
     }

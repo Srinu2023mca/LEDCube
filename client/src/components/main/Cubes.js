@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import swal from 'sweetalert';
-import HamsterWheel from './LoadingHamster/index';
-import { useCreateCubesMutation,useGetCubesMutation,useUpdateCubesByIdMutation,useDeleteCubesByIdMutation } from '../app/service/CubesSlice';
+import HamsterWheel from '../LoadingHamster/index';
+import { useCreateCubesMutation,useGetCubesMutation,useUpdateCubesByIdMutation,useDeleteCubesByIdMutation } from '../../app/service/CubesSlice';
 
 
 function Cubes() {

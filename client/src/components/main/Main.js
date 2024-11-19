@@ -4,7 +4,7 @@ import AudioPlayer from './AudioPlayer';
 import CubeWindow from './CubeWindow';
 import swal from 'sweetalert';
 import {useNavigate} from "react-router-dom"
-import { useCreateSongCubesMutation } from '../app/service/SongCubesSlice';
+import { useCreateSongCubesMutation } from '../../app/service/SongCubesSlice';
 
 function Main() {
   const [cubes, setCubes] = useState([{ id: 1 }]);

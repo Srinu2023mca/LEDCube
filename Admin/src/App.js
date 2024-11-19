@@ -1,8 +1,7 @@
-import React, { useState, useEffect, Suspense } from 'react'
-import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
-import { useSelector } from 'react-redux';
+import React, {Suspense } from 'react'
+import { BrowserRouter, Route, Routes,} from 'react-router-dom'
 
-import { CSpinner, useColorModes } from '@coreui/react'
+import { CSpinner} from '@coreui/react'
 import './scss/style.scss'
 import ForgotPassword from './views/pages/forgot/ForgotPassword'
 import ResetPassword from './views/pages/forgot/ResetPassword';
@@ -30,7 +29,7 @@ const App = () => {
           </div>
         }
       >
-        <ToastContainer />
+        
         <Routes>
           <Route
             exact
@@ -57,6 +56,7 @@ const App = () => {
           <Route exact path="/500" name="Page 500" element={<Page500 />} />
           <Route path="*" element={<DefaultLayout />} />
         </Routes>
+        <ToastContainer />
       </Suspense>
     </BrowserRouter>
   )

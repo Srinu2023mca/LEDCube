@@ -4,36 +4,29 @@ export const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     addCustomer: builder.mutation({
       query: (data) => ({
-        url: '/api/v1/customers',
+        url: '/api/v1/signup',
         method: 'POST',
         body: data,
       }),
     }),
-    forgot: builder.mutation({
-      query: (data) => ({
-        url: '/api/v1/auth/forgot',
-        method: 'POST',
-        body: data,
-      }),
-    }),
-    reset: builder.mutation({
-      query: ({password,token}) => ({
-        url: `/api/v1/auth/reset/${token}`,
-        method: 'POST',
-        body: {password},
+    resetCustomer: builder.mutation({
+      query: ({id}) => ({
+        url: `/api/v1/customers/reset/${id}`,
+        method: 'GET',
+        
       }),
     }),
 
     getCustomers: builder.mutation({
         query: () => ({
-          url: '/api/v1/auth/customers',
+          url: '/api/v1/customers',
           method: 'GET',
         }),
       }),
 
     getCustomer: builder.mutation({
-        query: ({id}) => ({
-          url: `/api/v1/auth/customers/${id}`,
+        query: (id) => ({
+          url: `/api/v1/customers/${id}`,
           method: 'GET',
         }),
       }),
@@ -41,7 +34,15 @@ export const userApiSlice = apiSlice.injectEndpoints({
     updateCustomer: builder.mutation({
       query: ({id,data}) => ({
         url: `/api/v1/customers/${id}`,
-        method: 'PUT',
+        method: 'PATCH',
+        body: data,
+      }),
+    }),
+
+    updateActive: builder.mutation({
+      query: ({id,data}) => ({
+        url: `/api/v1/updateActive/${id}`,
+        method: 'PATCH',
         body: data,
       }),
     }),
@@ -53,10 +54,9 @@ export const userApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useAddCustomerMutation,
-  useForgotMutation,
-  useResetMutation,
+  useResetCustomerMutation,
   useGetCustomersMutation,
   useGetCustomerMutation,
   useUpdateCustomerMutation,
-
+  useUpdateActiveMutation
 } = userApiSlice

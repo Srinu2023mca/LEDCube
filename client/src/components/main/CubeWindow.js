@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { useGetCubesMutation } from '../app/service/CubesSlice';
+import { useGetCubesMutation } from '../../app/service/CubesSlice';
 import swal from 'sweetalert';
 
 function CubeWindow({ onAddEntry, onDelete, cubeData,duplicateCubes}) {

@@ -8,7 +8,7 @@ import { useSelector,useDispatch } from 'react-redux'
 import { setCredentials } from '../app/features/authSlice';
 
 const ProtectedRoute = ({ children }) => {
-  const [loading,setLoading] = useState(false)
+  const [loading,setLoading] = useState(true)
 
   const dispatch =useDispatch()
 
@@ -21,7 +21,7 @@ const ProtectedRoute = ({ children }) => {
   useEffect(()=>{
     
     const fetchUserData = async()=>{
-      setLoading(true)
+      // setLoading(true)
 
       if(!isAuthenticated){
     try{

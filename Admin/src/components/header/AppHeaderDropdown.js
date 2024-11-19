@@ -1,4 +1,3 @@
-import React from 'react'
 import {useNavigate } from 'react-router-dom'
 import {
   CAvatar,
@@ -11,7 +10,7 @@ import {
 import { cilAccountLogout, cilSettings, cilUser } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { logout } from '../../app/features/auth/authSlice'
 import { useLogoutUserMutation } from '../../app/service/usersApiSlice'
 
@@ -27,11 +26,11 @@ const AppHeaderDropdown = () => {
 
   const dispatch = useDispatch()
 
-  const { isAuthenticated } = useSelector((state) => state.auth)
 
-  const [logoutUser, { isLoading }] = useLogoutUserMutation()
+  const [logoutUser] = useLogoutUserMutation()
 
   const logoutHandler = async () => {
+  
     try {
       const res = await logoutUser().unwrap();
       // console.log('logout status', res)
