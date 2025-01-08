@@ -1,16 +1,15 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import swal from 'sweetalert';
+import swal from "sweetalert";
 import { useLoginMutation } from "../../app/service/usersApiSlice";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 import { setCredentials } from "../../app/features/authSlice";
 import { useGetUserMutation } from "../../app/service/usersApiSlice";
-import HamsterWheel
- from "../LoadingHamster";
+import HamsterWheel from "../LoadingHamster";
 
 const Login = () => {
-  const [email, setEmail] = useState("vemulasrinu104@gmail.com");
-  const [password, setPassword] = useState("Srinu53@");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
@@ -18,35 +17,34 @@ const Login = () => {
   const { isAuthenticated } = useSelector((state) => state.auth);
   // console.log(isAuthenticated)
 
-  const [login, { isLoading }] = useLoginMutation()
-  const [getUser] = useGetUserMutation()
+  const [login, { isLoading }] = useLoginMutation();
+  const [getUser] = useGetUserMutation();
 
-  useEffect(()=>{
-    const fetchUserData = async()=>{
-    try{
-      
-        const response =await getUser().unwrap();
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await getUser().unwrap();
         // console.log(response)
-        if(response?.status==='success'){
-          navigate('/')
+        if (response?.status === "success") {
+          navigate("/");
+        } else {
+          console.log("User Not Verified");
         }
-        else{
-          console.log("User Not Verified")
-        }
-      }catch(error){
-        console.log("Error",error)
+      } catch (error) {
+        console.log("Error", error);
       }
-    }
+    };
 
-    fetchUserData()
-  },[navigate])
+    fetchUserData();
+  }, [navigate]);
 
-  if(isLoading){
-    return <>
-    <HamsterWheel/>
-    </>
+  if (isLoading) {
+    return (
+      <>
+        <HamsterWheel />
+      </>
+    );
   }
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -67,37 +65,48 @@ const Login = () => {
   return (
     <div className="login-container ">
       <div className="form-container">
-     
-      <form onSubmit={handleSubmit} className="form w-100">
-      <h2 className="mb-3 text-primary">LOGIN</h2>
-      {error && <p className="error text-danger">{error}</p>}
-      <div className="form-group d-flex align-items-center justify-content-between w-100">
-        <label className="form-label w-25">Email:</label>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="form-control mb-2"
-        />
-      </div>
-      <div className="form-group d-flex align-items-center justify-content-between  w-100">
-        <label className="form-label w-25">Password:</label>
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="form-control mb-2"
-        />
-      </div>
-        
-        
-        <button type="submit" className="btn btn-primary px-5">
-        {isLoading ? <span className="spinner-border spinner-border-sm mx-2" role="status" aria-hidden="true"></span> : 'LogIn'}
-        </button>
-      </form>
-      <Link to={"/forgot"} className="text-decoration-none  w-100 mb-3 text-end pe-3">Forgot Password</Link>
+        <form onSubmit={handleSubmit} className="form w-100">
+          <h2 className="mb-3 text-primary">LOGIN</h2>
+          {error && <p className="error text-danger">{error}</p>}
+          <div className="form-group d-flex align-items-center justify-content-between w-100">
+            <label className="form-label w-25">Email:</label>
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="form-control mb-2"
+            />
+          </div>
+          <div className="form-group d-flex align-items-center justify-content-between  w-100">
+            <label className="form-label w-25">Password:</label>
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="form-control mb-2"
+            />
+          </div>
+
+          <button type="submit" className="btn btn-primary px-5">
+            {isLoading ? (
+              <span
+                className="spinner-border spinner-border-sm mx-2"
+                role="status"
+                aria-hidden="true"
+              ></span>
+            ) : (
+              "LogIn"
+            )}
+          </button>
+        </form>
+        <Link
+          to={"/forgot"}
+          className="text-decoration-none  w-100 mb-3 text-end pe-3"
+        >
+          Forgot Password
+        </Link>
       </div>
     </div>
   );

@@ -1,8 +1,8 @@
 // src/views/pages/login/Login.js
 
-import  { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { useDispatch,} from 'react-redux'
+import { useDispatch } from 'react-redux'
 import {
   CButton,
   CCard,
@@ -19,44 +19,44 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
-import { useLoginMutation,useGetUserMutation } from '../../../app/service/usersApiSlice'
+import { useLoginMutation, useGetUserMutation } from '../../../app/service/usersApiSlice'
 import { setCredentials } from '../../../app/features/auth/authSlice'
 import { toast } from 'react-toastify'
 import './Login.css' // Import the custom CSS file
 
 const Login = () => {
-  const [email, setEmail] = useState('vemulasrinuiso@gmail.com')
-  const [password, setPassword] = useState('Srinu53@')
-  const [loading,setLoading] =useState(true)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(true)
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const [login, {isLoading}] = useLoginMutation()
-  const [getUser] =useGetUserMutation()
+  const [login, { isLoading }] = useLoginMutation()
+  const [getUser] = useGetUserMutation()
 
   useEffect(() => {
     const fetchData = async () => {
-      try{
-      const res =await getUser().unwrap();
-      // console.log(res)
-      if (res.status === 'success') {
-        navigate('/dashboard')
+      try {
+        const res = await getUser().unwrap()
+        // console.log(res)
+        if (res.status === 'success') {
+          navigate('/dashboard')
+        }
+      } catch (error) {
+        console.log(error)
+      } finally {
+        setLoading(false)
       }
-    }catch(error){
-      console.log(error)
-    }finally{
-      setLoading(false)
-    }
     }
 
     fetchData()
-  }, [navigate,getUser])
+  }, [navigate, getUser])
 
   const submitHandler = async (e) => {
     e.preventDefault()
     try {
-      const res = await login({ email, password }).unwrap();
+      const res = await login({ email, password }).unwrap()
       // console.log(res)
       dispatch(setCredentials({ ...res }))
       toast.success('Login Successful! Welcome back!.')
@@ -67,7 +67,7 @@ const Login = () => {
     }
   }
 
-  if (loading) return <CSpinner color="primary" />;
+  if (loading) return <CSpinner color="primary" />
 
   return (
     <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center justify-content-center">
@@ -131,7 +131,7 @@ const Login = () => {
                     </CRow>
                     <CRow className="login-footer ">
                       <CCol className="text-end">
-                        <Link to="/forgot-password" className=''>
+                        <Link to="/forgot-password" className="">
                           <CButton color="link" className="px-0 text-decoration-none">
                             Forgot password?
                           </CButton>

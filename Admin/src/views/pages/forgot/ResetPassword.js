@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import swal from 'sweetalert2';
-import { useResetMutation } from "../../../app/service/usersApiSlice";
-import { useParams,useNavigate } from "react-router-dom";
+import React, { useState } from 'react'
+import swal from 'sweetalert2'
+import { useResetMutation } from '../../../app/service/usersApiSlice'
+import { useParams, useNavigate } from 'react-router-dom'
 import {
   CButton,
   CCard,
@@ -21,46 +21,46 @@ import { cilLockLocked } from '@coreui/icons'
 import { toast } from 'react-toastify'
 
 const ResetPassword = () => {
-    const [password, setPassword] = useState("Srinu53@");
-    const [conformPassword, setConformPassword] = useState("Srinu53@");
-  const [error, setError] = useState("");
+  const [password, setPassword] = useState('')
+  const [conformPassword, setConformPassword] = useState('')
+  const [error, setError] = useState('')
 
   const [Reset, { isLoading }] = useResetMutation()
-  const {token} =useParams();
+  const { token } = useParams()
   console.log(token)
-const navigate =useNavigate();
+  const navigate = useNavigate()
 
-  if(isLoading){
-    return <>
-    {/* <HamsterWheel/> */}
-    <h1>Loading</h1>
-    </>
+  if (isLoading) {
+    return (
+      <>
+        {/* <HamsterWheel/> */}
+        <h1>Loading</h1>
+      </>
+    )
   }
 
-
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     try {
-        if(password!==conformPassword){
-            setError("Password and Conform password are not same")
-        }
-      const response = await Reset({password,token}).unwrap();
+      if (password !== conformPassword) {
+        setError('Password and Conform password are not same')
+      }
+      const response = await Reset({ password, token }).unwrap()
       console.log(response)
-      if(response.status==="success"){
+      if (response.status === 'success') {
         toast.success('Password Reset Successful!.')
-        navigate("/login")
-    }
-
+        navigate('/login')
+      }
     } catch (err) {
-      setError("Invalid Data");
+      setError('Invalid Data')
     }
-  };
+  }
 
   return (
     // <div className="container ">
     //   <div className="form-container ">
-     
+
     //   <form onSubmit={handleSubmit} className="form w-100">
     //   <h2 className="mb-3 text-primary">Reset Password</h2>
     //   {error && <p className="error text-danger">{error}</p>}
@@ -84,7 +84,7 @@ const navigate =useNavigate();
     //       className="form-control mb-2"
     //     />
     //   </div>
-           
+
     //     <button type="submit" className="btn btn-primary w-50">
     //     {isLoading ? <span className="spinner-border spinner-border-sm mx-2" role="status" aria-hidden="true"></span> :<span>Send</span>}
     //     </button>
@@ -92,7 +92,7 @@ const navigate =useNavigate();
     //   </div>
     // </div>
     <div className="bg-body-tertiary d-flex flex-row align-items-center">
-      <CContainer style={{ left: '0px',marginTop:"5rem" }}>
+      <CContainer style={{ left: '0px', marginTop: '5rem' }}>
         <CRow className="justify-content-center">
           <CCol md={6}>
             <CCard>
@@ -150,7 +150,7 @@ const navigate =useNavigate();
         </CRow>
       </CContainer>
     </div>
-  );
-};
+  )
+}
 
-export default ResetPassword;
+export default ResetPassword
